@@ -20,8 +20,8 @@ public class GameScreen implements Screen {
 	public GameScreen() {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		
-		makeCircles(Color.YELLOW, 44, 44);
+
+		makeCircles(Color.YELLOW, 22, 64);
 	}
 
 	@Override
@@ -60,13 +60,18 @@ public class GameScreen implements Screen {
 		}
 		batcher.dispose();
 	}
-	
+
 	private void makeCircles(Color color, int radiusMin, int radiusMax) {
 		for (int i = 0; i < 3; i++) {
-			int x = radiusMax + 1 + (int) (Math.random() * (width - 2 * radiusMax - 1));
-			int y = radiusMax + 1 + (int) (Math.random() * (height - 2 * radiusMax - 1));
-			circles.add(new Circle(color, x, y, 2 * radiusMin, 2 * radiusMax, 1000));
+			int x = radiusMax + 1
+					+ (int) (Math.random() * (width - 2 * radiusMax - 1));
+			int y = radiusMax + 1
+					+ (int) (Math.random() * (height - 2 * radiusMax - 1));
+			Circle circle = new Circle(color, x, y, 2 * radiusMin,
+					2 * radiusMax, 1000);
+			circles.add(circle);
 		}
+
 	}
 
 }

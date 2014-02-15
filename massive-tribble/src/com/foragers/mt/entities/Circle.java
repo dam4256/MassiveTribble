@@ -40,6 +40,7 @@ public class Circle {
 		pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
 		pixmap.setColor(color);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
+		pixmap.drawCircle(size / 2, size / 2, diameterMin / 2);
 		
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);
