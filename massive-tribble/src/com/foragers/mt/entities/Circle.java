@@ -35,9 +35,7 @@ public class Circle {
 	}
 
 	private void make(Color color, int x, int y) {
-		// Get the largest power of two for the diameter.
-		int size = isPowerOfTwo(diameterMax) ? diameterMax : (int) Math.pow(2,
-				Math.ceil(Math.log(diameterMax) / Math.log(2)));
+		int size = getLargestPowerOfTwo(isPowerOfTwo(diameterMax) ? diameterMax + 1 : diameterMax);
 
 		pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
 		pixmap.setColor(color);
@@ -53,5 +51,8 @@ public class Circle {
 	private boolean isPowerOfTwo(int x) {
 		return x > 0 && (x & (x - 1)) == 0;
 	}
-
+	
+	private int getLargestPowerOfTwo(int x) {
+		return (int) Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
+	}
 }

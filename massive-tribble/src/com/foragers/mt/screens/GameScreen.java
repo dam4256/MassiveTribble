@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
 		height = Gdx.graphics.getHeight();
 
 		for (int i = 0; i < 1; i++) {
-			circles.add(new Circle(Color.YELLOW, width / 2, height / 2, 64, 64, 1000));
+			circles.add(new Circle(Color.YELLOW, width / 2, height / 2, 99, 99, 1000));
 		}
 	}
 
