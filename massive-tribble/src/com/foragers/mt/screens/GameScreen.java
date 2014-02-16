@@ -1,13 +1,10 @@
 package com.foragers.mt.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.foragers.mt.entities.Circle;
 
 public class GameScreen implements Screen {
@@ -15,12 +12,14 @@ public class GameScreen implements Screen {
 	private int width = 800;
 	private int height = 480;
 
-	private SpriteBatch batcher = new SpriteBatch();
-	private List<Circle> circles = new ArrayList<Circle>();
+	private Stage stage;
 
 	public GameScreen() {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
+		
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
 
 		makeCircles(3, Color.YELLOW, 22, 88, 2000);
 		makeCircles(2, Color.BLUE, 22, 88, 2000);
@@ -29,16 +28,8 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		batcher.begin();
-		for (Circle circle : circles) {
-			circle.render(batcher);
-		}
-		batcher.end();
-
-		for (Circle circle : circles) {
-			circle.reduce(delta);
-		}
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override
@@ -63,17 +54,14 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		for (Circle circle : circles) {
-			circle.dispose();
-		}
-		batcher.dispose();
+		stage.dispose();
 	}
 
 	private void makeCircles(int nb, Color color, int radiusMin, int radiusMax, int lifetime) {
 		for (int i = 0; i < nb; i++) {
 			int x = radiusMax + 1 + (int) (Math.random() * (width - 2 * radiusMax - 1));
 			int y = radiusMax + 1 + (int) (Math.random() * (height - 2 * radiusMax - 1));
-			circles.add(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
+			stage.addActor(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
 		}
 	}
 
