@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Circle {
+public class Circle extends Actor {
 
 	private Texture texture;
 
@@ -34,14 +35,16 @@ public class Circle {
 
 		maxDeltaTime = (float) lifetime / (diameterMax - diameterMin);
 
-		draw();
+		makeTexture();
 	}
 
-	public void render(SpriteBatch batcher) {
-		batcher.draw(texture, x - texture.getWidth() / 2, y - texture.getHeight() / 2);
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		batch.draw(texture, x - texture.getWidth() / 2, y - texture.getHeight() / 2);
 	}
 
-	public void reduce(float delta) {
+	@Override
+	public void act(float delta) {
 		if (diameterMax > diameterMin) {
 			deltaTime += 1000 * delta;
 
@@ -54,16 +57,12 @@ public class Circle {
 					diameterMax = diameterMin;
 				}
 
-				draw();
+				makeTexture();
 			}
 		}
 	}
 
-	public void dispose() {
-		texture.dispose();
-	}
-
-	private void draw() {
+	private void makeTexture() {
 		int size = getLargestPowerOfTwo(isPowerOfTwo(diameterMax) ? diameterMax + 1 : diameterMax);
 
 		Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
