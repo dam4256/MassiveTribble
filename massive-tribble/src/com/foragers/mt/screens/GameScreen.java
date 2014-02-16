@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.foragers.mt.entities.Circle;
 
@@ -26,6 +27,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		batcher.begin();
 		for (Circle circle : circles) {
 			circle.render(batcher);
