@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.foragers.mt.Sound;
 
 public class Circle extends Actor {
 
@@ -40,7 +36,6 @@ public class Circle extends Actor {
 		maxDeltaTime = (float) lifetime / (diameterMax - diameterMin);
 
 		makeTexture();
-		addInputListener();
 	}
 
 	@Override
@@ -82,21 +77,6 @@ public class Circle extends Actor {
 		
 		setBounds(x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
 	}
-	
-	private void addInputListener() {
-		setTouchable(Touchable.enabled);
-		addListener(new InputListener() {
-
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if (contains(x, y)) {
-					Sound.click.play();
-				}
-				return true;
-			}
-			
-		});
-	}
 
 	private boolean isPowerOfTwo(int x) {
 		return x > 0 && (x & (x - 1)) == 0;
@@ -111,10 +91,10 @@ public class Circle extends Actor {
 		return "Circle [x=" + x + ", y=" + y + ", diameterMin=" + diameterMin + ", diameterMax=" + diameterMax + "]";
 	}
 	
-	private boolean contains(float x, float y) {
-		float dx = x - texture.getWidth() / 2;
-		float dy = y - texture.getHeight() / 2;
-		return Math.sqrt(dx * dx + dy * dy) < diameterMin / 2;
+	public boolean contains(float x, float y) {
+		float dx = this.x -x;
+		float dy = this.y -y;
+		return dx * dx + dy * dy <= Math.pow(diameterMax / 2, 2);
 	}
 	
 }

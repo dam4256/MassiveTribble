@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.foragers.mt.Sound;
 import com.foragers.mt.entities.Circle;
 
 public class GameScreen implements Screen {
@@ -27,6 +30,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		updateTouching();
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
@@ -64,5 +68,21 @@ public class GameScreen implements Screen {
 			stage.addActor(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
 		}
 	}
+
+	private void updateTouching () {
+		if (Gdx.input.justTouched()) {
+			Vector3 touchPoint = new Vector3();
+			for(Actor actor : stage.getActors()){
+				if( actor instanceof Circle){
+					Circle circle = (Circle) actor;
+					touchPoint.set(Gdx.input.getX(), height - Gdx.input.getY(), 0);
+					if(circle.contains(touchPoint.x, touchPoint.y))
+						Sound.click.play();
+				}
+			}
+		}
+	}
+
+
 
 }
