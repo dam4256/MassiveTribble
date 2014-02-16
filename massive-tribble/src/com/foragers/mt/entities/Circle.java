@@ -69,7 +69,7 @@ public class Circle extends Actor {
 		pixmap.setColor(color);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
 		pixmap.drawCircle(size / 2, size / 2, diameterMin / 2);
-
+		
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);
 
@@ -87,7 +87,7 @@ public class Circle extends Actor {
 	public boolean contains(float x, float y) {
 		x = this.x - x;
 		y = this.y - y;
-		return x * x + y * y <= diameterMax * diameterMax;
+		return x * x + y * y <= (diameterMax/2)*(diameterMax/2);
 	}
 
 	@Override
