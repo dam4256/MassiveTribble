@@ -7,7 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.forager.mt.Assets;
 import com.foragers.mt.entities.Circle;
 
 public class GameScreen implements Screen {
@@ -17,6 +20,10 @@ public class GameScreen implements Screen {
 
 	private SpriteBatch batcher = new SpriteBatch();
 	private List<Circle> circles = new ArrayList<Circle>();
+	
+	private com.badlogic.gdx.math.Circle c1;
+	Vector3 touchPoint;
+	OrthographicCamera guiCam;
 
 	public GameScreen() {
 		width = Gdx.graphics.getWidth();
@@ -24,10 +31,18 @@ public class GameScreen implements Screen {
 
 		makeCircles(3, Color.YELLOW, 22, 88, 2000);
 		makeCircles(2, Color.BLUE, 22, 88, 2000);
+		
+		guiCam = new OrthographicCamera(320, 480);
+		guiCam.position.set(320 / 2, 480 / 2, 0);
+		touchPoint = new Vector3();
+		System.out.println("c1 => " + circles.get(0).getPost());
+		c1 = new com.badlogic.gdx.math.Circle(circles.get(0).getPost(), circles.get(0).getRadius());
 	}
 
 	@Override
 	public void render(float delta) {
+		updatePaused();
+		
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		batcher.begin();
@@ -77,4 +92,27 @@ public class GameScreen implements Screen {
 		}
 	}
 
+	
+	private void updatePaused () {
+		if (Gdx.input.justTouched()) {
+			System.out.println("c1 => " + circles.get(0).getPost());
+			
+			//guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			//System.out.println(" >" + Gdx.input.getX() + " " + Gdx.input.getY());
+			//if (c1.contains(touchPoint.x, touchPoint.y)) {
+			//	Assets.playSound(Assets.clickSound);
+				
+			//}
+			touchPoint.set(Gdx.input.getX(), height - Gdx.input.getY(), 0);
+			System.out.println(" >" + Gdx.input.getX() + " " + (height - Gdx.input.getY()));
+			if (c1.contains(touchPoint.x, touchPoint.y)) {
+			//	Assets.playSound(Assets.clickSound);
+				
+			}
+			if(circles.get(0).contains(touchPoint.x, touchPoint.y)){
+				Assets.playSound(Assets.clickSound);
+			}
+			
+		}
+	}
 }

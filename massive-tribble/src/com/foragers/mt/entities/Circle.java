@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class Circle {
 
@@ -84,4 +85,21 @@ public class Circle {
 	private int getLargestPowerOfTwo(int x) {
 		return (int) Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
 	}
+	
+	public Vector2 getPost(){
+		Vector2 vec2 = new Vector2();
+		return vec2.set(x, y);
+	}
+	
+	public int getRadius(){
+		return diameterMax;
+	}
+
+	
+	public boolean contains (float x, float y) {
+		x = this.x - x;
+		y = this.y - y;
+		return x * x + y * y <= diameterMax * diameterMax;
+	}
+	
 }
