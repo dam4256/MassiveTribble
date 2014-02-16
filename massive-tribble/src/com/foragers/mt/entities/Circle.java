@@ -84,7 +84,7 @@ public class Circle extends Actor {
 		return (int) Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
 	}
 	
-	public boolean contains (float x, float y) {
+	public boolean contains(float x, float y) {
 		x = this.x - x;
 		y = this.y - y;
 		return x * x + y * y <= diameterMax * diameterMax;
@@ -92,9 +92,7 @@ public class Circle extends Actor {
 
 	@Override
 	public String toString() {
-		return "Circle [x=" + x + ", y=" + y + ", diameterMin=" + diameterMin
-				+ ", diameterMax=" + diameterMax + "]";
+		return "Circle [x=" + x + ", y=" + y + ", diameterMin=" + diameterMin + ", diameterMax=" + diameterMax + "]";
 	}
-	
 	
 }

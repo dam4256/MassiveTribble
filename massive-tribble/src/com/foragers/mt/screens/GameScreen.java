@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.forager.mt.Assets;
+import com.foragers.mt.Assets;
 import com.foragers.mt.entities.Circle;
-
 
 public class GameScreen implements Screen {
 
@@ -71,23 +70,21 @@ public class GameScreen implements Screen {
 		}
 	}
 
-
-	private void updateTouching () {
+	private void updateTouching() {
 		if (Gdx.input.justTouched()) {
 			Vector3 touchPoint = new Vector3();
-			for(Actor actor : stage.getActors()){
-				
-				if( actor instanceof Circle){
+			for (Actor actor : stage.getActors()) {
+				if (actor instanceof Circle) {
 					Circle circle = (Circle) actor;
 					System.out.println("post crcl => " + circle.toString());
 					touchPoint.set(Gdx.input.getX(), height - Gdx.input.getY(), 0);
 					System.out.println("toutch pts >" + Gdx.input.getX() + " " + (height - Gdx.input.getY()));
-					if(circle.contains(touchPoint.x, touchPoint.y)){
+					if (circle.contains(touchPoint.x, touchPoint.y)) {
 						Assets.playSound(Assets.clickSound);
 					}
 				}
 			}
-
 		}
 	}
+
 }
