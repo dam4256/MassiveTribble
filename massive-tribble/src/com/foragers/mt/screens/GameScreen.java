@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.foragers.mt.Assets;
+import com.foragers.mt.Sound;
 import com.foragers.mt.entities.Circle;
 
 public class GameScreen implements Screen {
@@ -80,7 +80,7 @@ public class GameScreen implements Screen {
 					touchPoint.set(Gdx.input.getX(), height - Gdx.input.getY(), 0);
 					System.out.println("toutch pts >" + Gdx.input.getX() + " " + (height - Gdx.input.getY()));
 					if (circle.contains(touchPoint.x, touchPoint.y)) {
-						Assets.playSound(Assets.clickSound);
+						Sound.click.play();
 					}
 				}
 			}
