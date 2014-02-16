@@ -22,18 +22,23 @@ public class GameScreen implements Screen {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 
-		makeCircles(Color.YELLOW, 22, 64);
+		makeCircles(3, Color.YELLOW, 22, 88, 2000);
+		makeCircles(2, Color.BLUE, 22, 88, 2000);
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		batcher.begin();
 		for (Circle circle : circles) {
 			circle.render(batcher);
 		}
 		batcher.end();
+
+		for (Circle circle : circles) {
+			circle.reduce(delta);
+		}
 	}
 
 	@Override
@@ -64,17 +69,12 @@ public class GameScreen implements Screen {
 		batcher.dispose();
 	}
 
-	private void makeCircles(Color color, int radiusMin, int radiusMax) {
-		for (int i = 0; i < 3; i++) {
-			int x = radiusMax + 1
-					+ (int) (Math.random() * (width - 2 * radiusMax - 1));
-			int y = radiusMax + 1
-					+ (int) (Math.random() * (height - 2 * radiusMax - 1));
-			Circle circle = new Circle(color, x, y, 2 * radiusMin,
-					2 * radiusMax, 1000);
-			circles.add(circle);
+	private void makeCircles(int nb, Color color, int radiusMin, int radiusMax, int lifetime) {
+		for (int i = 0; i < nb; i++) {
+			int x = radiusMax + 1 + (int) (Math.random() * (width - 2 * radiusMax - 1));
+			int y = radiusMax + 1 + (int) (Math.random() * (height - 2 * radiusMax - 1));
+			circles.add(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
 		}
-
 	}
 
 }
