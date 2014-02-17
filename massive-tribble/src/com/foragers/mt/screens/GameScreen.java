@@ -2,10 +2,10 @@ package com.foragers.mt.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.foragers.mt.entities.Circle;
+import com.foragers.mt.entities.Circle.Color;
 
 public class GameScreen implements Screen {
 
@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
-		makeCircles(3, Color.YELLOW, 22, 88, 2000);
+		makeCircles(3, Color.GREEN, 22, 88, 2000);
 		makeCircles(2, Color.BLUE, 22, 88, 2000);
 	}
 

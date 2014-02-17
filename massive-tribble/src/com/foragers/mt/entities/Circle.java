@@ -1,9 +1,8 @@
 package com.foragers.mt.entities;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,7 +11,25 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.foragers.mt.Sound;
 
 public class Circle extends Actor {
-
+	
+	public enum Color {
+		
+		BLUE (com.badlogic.gdx.graphics.Color.BLUE),
+		RED (com.badlogic.gdx.graphics.Color.RED),
+		GREEN (com.badlogic.gdx.graphics.Color.GREEN);
+		
+		private com.badlogic.gdx.graphics.Color gdxColor;
+		
+		Color(com.badlogic.gdx.graphics.Color gdxColor) {
+			this.gdxColor = gdxColor;
+		}
+		
+		public String toString() {
+			return name().toLowerCase();
+		}
+		
+	}
+	
 	private Texture texture;
 
 	private String order;
@@ -49,9 +66,6 @@ public class Circle extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(texture, getX(), getY());
-
-		BitmapFont font = new BitmapFont();
-		font.draw(batch, order, x - font.getBounds(order).width / 2, y + font.getBounds(order).height / 2);
 	}
 
 	@Override
@@ -79,13 +93,16 @@ public class Circle extends Actor {
 		int size = getLargestPowerOfTwo(isPowerOfTwo(diameterMax) ? diameterMax + 1 : diameterMax);
 
 		Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-		pixmap.setColor(color);
+		pixmap.setColor(color.gdxColor);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
-		pixmap.fillCircle(size / 2, size / 2, diameterMin / 2);
+		
+		Pixmap order = new Pixmap(Gdx.files.internal("data/" + color.toString() + "-" + this.order + ".png"));
+		pixmap.drawPixmap(order, size / 2 - diameterMin / 2, size / 2 - diameterMin / 2);
 		
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);
 
+		order.dispose();
 		pixmap.dispose();
 		
 		setBounds(x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
