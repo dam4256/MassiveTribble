@@ -91,6 +91,7 @@ public class Circle extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if (contains(x, y)) {
 					Sound.click.play();
+					remove();
 				}
 				return true;
 			}
