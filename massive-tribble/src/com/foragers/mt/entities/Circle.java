@@ -64,6 +64,8 @@ public class Circle extends Actor {
 
 				makeTexture();
 			}
+		} else {
+			remove();
 		}
 	}
 
