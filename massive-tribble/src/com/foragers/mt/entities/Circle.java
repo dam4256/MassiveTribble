@@ -3,6 +3,7 @@ package com.foragers.mt.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,6 +15,7 @@ public class Circle extends Actor {
 
 	private Texture texture;
 
+	private String order;
 	private int x;
 	private int y;
 	private Color color;
@@ -30,7 +32,8 @@ public class Circle extends Actor {
 	 */
 	private float maxDeltaTime;
 
-	public Circle(int x, int y, Color color, int diameterMin, int diameterMax, int lifetime) {
+	public Circle(int order, int x, int y, Color color, int diameterMin, int diameterMax, int lifetime) {
+		this.order = String.valueOf(order);
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -46,6 +49,9 @@ public class Circle extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(texture, getX(), getY());
+
+		BitmapFont font = new BitmapFont();
+		font.draw(batch, order, x - font.getBounds(order).width / 2, y + font.getBounds(order).height / 2);
 	}
 
 	@Override
@@ -75,7 +81,7 @@ public class Circle extends Actor {
 		Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
 		pixmap.setColor(color);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
-		pixmap.drawCircle(size / 2, size / 2, diameterMin / 2);
+		pixmap.fillCircle(size / 2, size / 2, diameterMin / 2);
 		
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);

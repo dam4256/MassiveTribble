@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
 		for (int i = 0; i < nb; i++) {
 			int x = radiusMax + 1 + (int) (Math.random() * (width - 2 * radiusMax - 1));
 			int y = radiusMax + 1 + (int) (Math.random() * (height - 2 * radiusMax - 1));
-			stage.addActor(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
+			stage.addActor(new Circle(i + 1, x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
 		}
 	}
 
