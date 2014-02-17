@@ -189,7 +189,7 @@ public class CircleFactory {
 
 
 
-	public Actor makeCircle(Color color, int radiusMin) {
+	public Actor makeCircle(int order, Color color, int radiusMin) {
 
 		float x,y;
 		if(this.nbCurrent>this.nbTotal){
@@ -200,7 +200,7 @@ public class CircleFactory {
 			x = positList.get(nbCurrent).x;
 			y = positList.get(nbCurrent).y;
 		}
-		Actor result = new Circle((int)x, (int) y, color, 2 * radiusMin, 2 * radiusMax, staticLifeTime*500);
+		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 * radiusMax, staticLifeTime*500);
 		this.nbCurrent++;
 		return result;
 	}

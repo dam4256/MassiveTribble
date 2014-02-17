@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
 			factory.setLifeTime(lifetime);
 			factory.setPixMargin(10);
 			for(int i=0; i< nb ; i++){
-				Actor actor = factory.makeCircle(color, radiusMin);
+				Actor actor = factory.makeCircle(i+1 ,color, radiusMin);
 				stage.addActor(actor);
 				Thread.sleep(delayToDraw);
 			}
