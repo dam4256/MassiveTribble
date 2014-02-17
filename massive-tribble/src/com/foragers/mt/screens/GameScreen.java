@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.foragers.mt.entities.Circle;
+import com.foragers.mt.screens.CircleFactory.LIFE_TIME_STRATEGY;
 
 public class GameScreen implements Screen {
 
@@ -58,10 +59,18 @@ public class GameScreen implements Screen {
 	}
 
 	private void makeCircles(int nb, Color color, int radiusMin, int radiusMax, int lifetime) {
-		for (int i = 0; i < nb; i++) {
-			int x = radiusMax + 1 + (int) (Math.random() * (width - 2 * radiusMax - 1));
-			int y = radiusMax + 1 + (int) (Math.random() * (height - 2 * radiusMax - 1));
-			stage.addActor(new Circle(x, y, color, 2 * radiusMin, 2 * radiusMax, lifetime));
+		try {
+			int delayToDraw = 500; // TODO
+			CircleFactory factory = new CircleFactory(nb, LIFE_TIME_STRATEGY.STATIC, this.height, this.width, radiusMax);
+			factory.setLifeTime(lifetime);
+			factory.setPixMargin(10);
+			for(int i=0; i< nb ; i++){
+				Actor actor = factory.makeCircle(color, radiusMin);
+				stage.addActor(actor);
+				Thread.sleep(delayToDraw);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
