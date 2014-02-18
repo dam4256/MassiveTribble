@@ -8,11 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.foragers.mt.Art;
-import com.foragers.mt.Sound;
+
 
 public class Circle extends Actor {
-	
-	public enum Color {
+
+public enum Color {
 		
 		RED (com.badlogic.gdx.graphics.Color.RED, Art.redCircle),
 		GREEN (com.badlogic.gdx.graphics.Color.GREEN, Art.greenCircle),
@@ -27,7 +27,7 @@ public class Circle extends Actor {
 		}
 		
 	}
-	
+
 	private Texture texture;
 
 	private int order;
@@ -36,6 +36,26 @@ public class Circle extends Actor {
 	private Color color;
 	private int diameterMin;
 	private int diameterMax;
+
+	public int getOrder() {
+		return order;
+	}
+
+	public int getCenterX() {
+		return x;
+	}
+
+	public int getCenterY() {
+		return y;
+	}
+
+	public int getDiameterMin() {
+		return diameterMin;
+	}
+
+	public int getCurrentDiameterMax() {
+		return diameterMax;
+	}
 
 	/*
 	 * The amount of time passed 
@@ -61,7 +81,6 @@ public class Circle extends Actor {
 		this.diameterMax = diameterMax;
 
 		maxDeltaTime = (float) lifetime / (diameterMax - diameterMin);
-
 		makeTexture();
 		addInputListener();
 	}
@@ -90,7 +109,7 @@ public class Circle extends Actor {
 					makeTexture();
 				}
 			} else {
-				remove();
+				beforeRemove(false);
 			}
 		} else {
 			showTime += 1000 * delta;
@@ -112,23 +131,28 @@ public class Circle extends Actor {
 		
 		setBounds(x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
 	}
-	
+
 	private void addInputListener() {
 		setTouchable(Touchable.enabled);
 		addListener(new InputListener() {
-
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if (contains(x, y)) {
-					Sound.click.play();
-					remove();
+					ScoreManager.circleHasTouch(Circle.this);
 				}
 				return true;
 			}
-			
 		});
+
 	}
 
+	private void beforeRemove(boolean removeByUser){
+		if(!removeByUser){
+			ScoreManager.circleHasDiedBeforeTouch(this);
+		}
+		remove();
+	}
+	
 	private boolean isPowerOfTwo(int x) {
 		return x > 0 && (x & (x - 1)) == 0;
 	}
@@ -136,16 +160,16 @@ public class Circle extends Actor {
 	private int getLargestPowerOfTwo(int x) {
 		return (int) Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Circle [x=" + x + ", y=" + y + ", diameterMin=" + diameterMin + ", diameterMax=" + diameterMax + "]";
 	}
-	
-	private boolean contains(float x, float y) {
+
+	boolean contains(float x, float y) {
 		float dx = x - texture.getWidth() / 2;
 		float dy = y - texture.getHeight() / 2;
 		return Math.sqrt(dx * dx + dy * dy) < diameterMin / 2;
 	}
-	
+
 }
