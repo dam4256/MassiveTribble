@@ -165,7 +165,7 @@ public class CircleFactory {
 			x = positList.get(nbCurrent).x;
 			y = positList.get(nbCurrent).y;
 		}
-		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 *radiusMax , lifeTime*8);
+		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 *radiusMax , lifeTime);
 		this.nbCurrent++;
 		return result;
 	}

@@ -49,7 +49,6 @@ public class GameScreen implements Screen {
 		spriteBatch.end();
 
 		str = ScoreManager.getMsg();
-		System.out.println("-- " + str);
 		if( !str.equals("") && str != null){
 			spriteBatch = new SpriteBatch();
 			font = new BitmapFont(Gdx.files.internal("data/wellbutrin.fnt"),

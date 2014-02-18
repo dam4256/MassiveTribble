@@ -34,7 +34,6 @@ public class ScoreManager{
 	public static void circleHasTouch(Circle circle){
 		ScoreManager sm = getInstance();
 		int currentOrder = circle.getOrder();
-		System.out.println("# " + currentOrder);
 		if(currentOrder == sm.nextExpectOrderCircle){
 			Sound.click.play();
 			circle.remove();
@@ -47,7 +46,6 @@ public class ScoreManager{
 	private void updateScore(Circle circle) {
 		int currentDistance = (circle.getCurrentDiameterMax()/2) -  this.minRadius;
 		int distancePercent = (currentDistance * 100) / this.maxDistance;
-	//	System.out.println("\\ "+distancePercent + " "+currentDistance + " " + maxDistance);
 		if(distancePercent<=10){
 			lastGain = 500;
 			msg = "You are the boss!";
@@ -60,7 +58,6 @@ public class ScoreManager{
 			lastGain = 50;
 		}
 		currentScore +=lastGain;
-		System.out.println("MAJ score"+ currentScore);
 	/*	ntre 90 et 100% : 500 points
 		Entre 75 et 89% : 300 points
 		Entre 50 et 74% : 100 points
