@@ -8,28 +8,27 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.foragers.mt.Sound;
 
 public class Circle extends Actor {
-	
+
 	public enum Color {
-		
+
 		BLUE (com.badlogic.gdx.graphics.Color.BLUE),
 		RED (com.badlogic.gdx.graphics.Color.RED),
 		GREEN (com.badlogic.gdx.graphics.Color.GREEN);
-		
+
 		private com.badlogic.gdx.graphics.Color gdxColor;
-		
+
 		Color(com.badlogic.gdx.graphics.Color gdxColor) {
 			this.gdxColor = gdxColor;
 		}
-		
+
 		public String toString() {
 			return name().toLowerCase();
 		}
-		
+
 	}
-	
+
 	private Texture texture;
 
 	private String order;
@@ -38,6 +37,26 @@ public class Circle extends Actor {
 	private Color color;
 	private int diameterMin;
 	private int diameterMax;
+
+	public String getOrder() {
+		return order;
+	}
+
+	public int getCenterX() {
+		return x;
+	}
+
+	public int getCenterY() {
+		return y;
+	}
+
+	public int getDiameterMin() {
+		return diameterMin;
+	}
+
+	public int getCurrentDiameterMax() {
+		return diameterMax;
+	}
 
 	/*
 	 * The amount of time passed since the last reducing action.
@@ -58,7 +77,6 @@ public class Circle extends Actor {
 		this.diameterMax = diameterMax;
 
 		maxDeltaTime = (float) lifetime / (diameterMax - diameterMin);
-
 		makeTexture();
 		addInputListener();
 	}
@@ -77,7 +95,7 @@ public class Circle extends Actor {
 				double nbPixelsToReduce = Math.floor(deltaTime / maxDeltaTime);
 				diameterMax -= nbPixelsToReduce;
 				deltaTime -= nbPixelsToReduce * maxDeltaTime;
-				
+
 				if (diameterMax < diameterMin) {
 					diameterMax = diameterMin;
 				}
@@ -85,7 +103,7 @@ public class Circle extends Actor {
 				makeTexture();
 			}
 		} else {
-			remove();
+			beforeRemove(false);
 		}
 	}
 
@@ -95,35 +113,40 @@ public class Circle extends Actor {
 		Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
 		pixmap.setColor(color.gdxColor);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
-		
+
 		Pixmap order = new Pixmap(Gdx.files.internal("data/" + color.toString() + "-" + this.order + ".png"));
 		pixmap.drawPixmap(order, size / 2 - diameterMin / 2, size / 2 - diameterMin / 2);
-		
+
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);
 
 		order.dispose();
 		pixmap.dispose();
-		
+
 		setBounds(x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
 	}
-	
+
 	private void addInputListener() {
 		setTouchable(Touchable.enabled);
 		addListener(new InputListener() {
-
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if (contains(x, y)) {
-					Sound.click.play();
-					remove();
+					ScoreManager.circleHasTouch(Circle.this);
 				}
 				return true;
 			}
-			
 		});
+
 	}
 
+	private void beforeRemove(boolean removeByUser){
+		if(!removeByUser){
+			ScoreManager.circleHasDiedBeforeTouch(this);
+		}
+		remove();
+	}
+	
 	private boolean isPowerOfTwo(int x) {
 		return x > 0 && (x & (x - 1)) == 0;
 	}
@@ -131,16 +154,16 @@ public class Circle extends Actor {
 	private int getLargestPowerOfTwo(int x) {
 		return (int) Math.pow(2, Math.ceil(Math.log(x) / Math.log(2)));
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Circle [x=" + x + ", y=" + y + ", diameterMin=" + diameterMin + ", diameterMax=" + diameterMax + "]";
 	}
-	
-	private boolean contains(float x, float y) {
+
+	boolean contains(float x, float y) {
 		float dx = x - texture.getWidth() / 2;
 		float dy = y - texture.getHeight() / 2;
 		return Math.sqrt(dx * dx + dy * dy) < diameterMin / 2;
 	}
-	
+
 }
