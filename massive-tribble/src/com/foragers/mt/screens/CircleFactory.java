@@ -10,74 +10,58 @@ import com.foragers.mt.entities.Circle.Color;
 
 public class CircleFactory {
 
-	public static enum LIFE_TIME_STRATEGY {STATIC, RANDOM, SMART_MUSIC }
-
-	private static final int ATTEMPT_BEFORE_DROP = 5000;
+	private static final int ATTEMPT_BEFORE_DROP = 500;
 	private int _AttemptMarginCpt = 0;
 
-	//private LIFE_TIME_STRATEGY strategy;
 	private int nbTotal;
 	private int nbCurrent=0;
-	private int staticLifeTime = 500;
+	private int lifeTime = 500;
 	private int margin = 10;
 	private float initialMargin = 10f;
 	private int height;
 	private int width;
-	private int radiusMax;
+	private int radiusMin;
 	private List<Vector2> positList = new ArrayList<Vector2>();
 
-	public CircleFactory(int nb, LIFE_TIME_STRATEGY strategy, int height, int width, int radiusMax) {
-		//this.strategy = strategy;
+	public CircleFactory(int nb, int height, int width, int radiusMin) {
 		this.nbTotal = nb;
 		this.height = height;
 		this.width = width;
-		this.radiusMax = radiusMax;
-
-		computePositions();
+		this.radiusMin = radiusMin;
+		computePositions(); //compute the future position
 	}
-
 
 
 	private void computePositions() {
 		int attempt = 0;
 		initPosition();
-
+		//while overlap
 		while(attempt < ATTEMPT_BEFORE_DROP && !rulesRespects()){
 			movePositions();
 			computeDecreaseMargin(attempt);
 			attempt++;
-			//for(int i =0; i < this.nbTotal ; i++)
-			//	System.out.println("inter " + this.positList.get(i).x + " " + this.positList.get(i).y);
-			//System.out.println("recompute ! " + attempt);
-			/*for(com.badlogic.gdx.math.Circle circle : this.badLogicCircles){
-				stage.addActor(new Circle((int)circle.x, (int) circle.y, Color.GREEN, 2 * 22, 2 * radiusMax, staticLifeTime*5));
-			}*/
 		}
-		//for(int i =0; i < this.nbTotal ; i++)
-		//	System.out.println("new " + this.positList.get(i).x + " " + this.positList.get(i).y);
 	}
 
 
 	/**All margin% attempt step --> the margin deacrease.<br/>
 	 * Example : initial margin = 10 --> all 10%attempt --> current margin --
 	 * @param attempt 
-	 * @return */
+	 */
 	private void computeDecreaseMargin(final int attempt) {
 		int percentPerformAttempt = (attempt - _AttemptMarginCpt);
 		float percentLimit = (initialMargin/100f) * ATTEMPT_BEFORE_DROP;
-		//System.out.println("# " + percentPerformAttempt + " " + percentLimit + " " +attempt);
-		//System.out.println("> " + (10f / 100f) * 1000f);
 		if((percentPerformAttempt  )> percentLimit){
-			//System.out.println("decrease ! " + (margin-1) + " " + attempt);
 			this.margin--;
 			this._AttemptMarginCpt = attempt;
 		}
 	}
 
 
-
+/*
+ * Move a little the overlap circles
+ * */
 	private void movePositions() {
-		
 		boolean result = true;
 		for(int i =0; i < this.nbTotal -1 ; i++){
 			for(int j=i+1; j < this.nbTotal ; j++ ){
@@ -91,42 +75,41 @@ public class CircleFactory {
 						v1.y -= offSet;
 						v2.x -= offSet;
 						v2.y += offSet;
-					}else /*if(c1.x < c2.x && c1.y > c2.y)*/{
+					}else{
 						v1.x += offSet;
 						v1.y += offSet;
 						v2.x -= offSet;
 						v2.y -= offSet;
 					}
-					if(v1.x< this.radiusMax){
-						v1.x = this.radiusMax +1;
+					if(v1.x< this.radiusMin){
+						v1.x = this.radiusMin +1;
 					}
-					if(v2.x< this.radiusMax){
-						v2.x = this.radiusMax +1;
+					if(v2.x< this.radiusMin){
+						v2.x = this.radiusMin +1;
 					}
-					if(v1.y< this.radiusMax){
-						v1.y = this.radiusMax +1;
+					if(v1.y< this.radiusMin){
+						v1.y = this.radiusMin +1;
 					}
-					if(v2.y< this.radiusMax){
-						v2.y = this.radiusMax +1;
-					}
-					
-					if(v1.x+this.radiusMax> this.width){
-						v1.x = this.width - this.radiusMax - 1;
-					}
-					if(v2.x+this.radiusMax> this.width){
-						v2.x = this.width - this.radiusMax - 1;
+					if(v2.y< this.radiusMin){
+						v2.y = this.radiusMin +1;
 					}
 					
-					if(v1.y+this.radiusMax> this.height){
-						v1.y = this.height - this.radiusMax - 1;
+					if(v1.x+this.radiusMin> this.width){
+						v1.x = this.width - this.radiusMin - 1;
 					}
-					if(v2.y+this.radiusMax> this.height){
-						v2.y = this.height - this.radiusMax -1 ;
+					if(v2.x+this.radiusMin> this.width){
+						v2.x = this.width - this.radiusMin - 1;
+					}
+					
+					if(v1.y+this.radiusMin> this.height){
+						v1.y = this.height - this.radiusMin - 1;
+					}
+					if(v2.y+this.radiusMin> this.height){
+						v2.y = this.height - this.radiusMin -1 ;
 					}
 				}
 			}
 		}
-
 	}
 
 
@@ -144,44 +127,25 @@ public class CircleFactory {
 			}
 			if(result) break;
 		}
-		//System.out.println("rules => " + !result);
 		return !result;
 	}
 
-
 	private boolean circlesOverlaps(Vector2 vector1, Vector2 vector2) {
-		//System.out.println("## " + radiusMax + " " + margin);
 		float dx = vector1.x - vector2.x;
 		float dy = vector1.y - vector2.y;
 		float distance = dx * dx + dy * dy;
-		float radiusSum = 2*this.radiusMax  + this.margin;
+		float radiusSum = 2*this.radiusMin  + this.margin;
 		return distance < radiusSum * radiusSum;
 	}
-	
-
-
 
 	/**
 	 * initialize with random position
 	 * */
 	private void initPosition() {
 		int indexPost = 0, x,y ;
-		
 		while(indexPost < nbTotal){
-			 x = radiusMax + 1 + (int) (Math.random() * (width - 2 * (radiusMax+margin) - 1));
-			 y = radiusMax + 1 + (int) (Math.random() * (height - 2 * (radiusMax+margin) - 1));
-			 //System.out.println("INIT " + x + " " + y);
-			/*if(indexPost == 0){
-				x = this.radiusMax;
-				y = this.radiusMax;
-			}else if(indexPost == 1){
-				x = this.radiusMax + 100;
-				y = this.radiusMax + 100;
-			}else{
-				x = this.radiusMax + 100;
-				y = this.radiusMax + 100;
-			}*/
-			
+			 x = radiusMin + 1 + (int) (Math.random() * (width - 2 * (radiusMin+margin) - 1));
+			 y = radiusMin + 1 + (int) (Math.random() * (height - 2 * (radiusMin+margin) - 1));
 			this.positList.add(new Vector2(x, y));
 			indexPost++;
 		}
@@ -189,7 +153,7 @@ public class CircleFactory {
 
 
 
-	public Actor makeCircle(int order, Color color, int radiusMin) {
+	public Actor makeCircle(int order, Color color, int radiusMax) {
 
 		float x,y;
 		if(this.nbCurrent>this.nbTotal){
@@ -200,21 +164,17 @@ public class CircleFactory {
 			x = positList.get(nbCurrent).x;
 			y = positList.get(nbCurrent).y;
 		}
-		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 * radiusMax, staticLifeTime);
+		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 *radiusMax , lifeTime);
 		this.nbCurrent++;
 		return result;
 	}
 
-
 	public void setLifeTime(int lifetime) {
-		this.staticLifeTime = lifetime;
+		this.lifeTime = lifetime;
 	}
 
 	public void setPixMargin(int margin) {
 		this.margin = margin;
 		this.initialMargin = margin;
 	}
-
-
-
 }
