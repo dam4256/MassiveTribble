@@ -1,11 +1,10 @@
-package com.foragers.mt.screens;
+package com.foragers.mt.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.foragers.mt.entities.Circle;
 import com.foragers.mt.entities.Circle.Color;
 
 public class CircleFactory {
@@ -21,13 +20,15 @@ public class CircleFactory {
 	private int height;
 	private int width;
 	private int radiusMin;
+	private int radiusMax;
 	private List<Vector2> positList = new ArrayList<Vector2>();
 
-	public CircleFactory(int nb, int height, int width, int radiusMin) {
+	public CircleFactory(int nb, int height, int width, int radiusMin, int radiusMax) {
 		this.nbTotal = nb;
 		this.height = height;
 		this.width = width;
 		this.radiusMin = radiusMin;
+		this.radiusMax = radiusMax;
 		computePositions(); //compute the future position
 	}
 
@@ -81,31 +82,31 @@ public class CircleFactory {
 						v2.x -= offSet;
 						v2.y -= offSet;
 					}
-					if(v1.x< this.radiusMin){
-						v1.x = this.radiusMin +1;
+					if(v1.x< this.radiusMax){
+						v1.x = this.radiusMax +1;
 					}
-					if(v2.x< this.radiusMin){
-						v2.x = this.radiusMin +1;
+					if(v2.x< this.radiusMax){
+						v2.x = this.radiusMax +1;
 					}
-					if(v1.y< this.radiusMin){
-						v1.y = this.radiusMin +1;
+					if(v1.y< this.radiusMax){
+						v1.y = this.radiusMax +1;
 					}
-					if(v2.y< this.radiusMin){
-						v2.y = this.radiusMin +1;
-					}
-					
-					if(v1.x+this.radiusMin> this.width){
-						v1.x = this.width - this.radiusMin - 1;
-					}
-					if(v2.x+this.radiusMin> this.width){
-						v2.x = this.width - this.radiusMin - 1;
+					if(v2.y< this.radiusMax){
+						v2.y = this.radiusMax +1;
 					}
 					
-					if(v1.y+this.radiusMin> this.height){
-						v1.y = this.height - this.radiusMin - 1;
+					if(v1.x+this.radiusMax> this.width){
+						v1.x = this.width - this.radiusMax - 1;
 					}
-					if(v2.y+this.radiusMin> this.height){
-						v2.y = this.height - this.radiusMin -1 ;
+					if(v2.x+this.radiusMax> this.width){
+						v2.x = this.width - this.radiusMax - 1;
+					}
+					
+					if(v1.y+this.radiusMax> this.height){
+						v1.y = this.height - this.radiusMax - 1;
+					}
+					if(v2.y+this.radiusMax> this.height){
+						v2.y = this.height - this.radiusMax -1 ;
 					}
 				}
 			}
@@ -144,8 +145,8 @@ public class CircleFactory {
 	private void initPosition() {
 		int indexPost = 0, x,y ;
 		while(indexPost < nbTotal){
-			 x = radiusMin + 1 + (int) (Math.random() * (width - 2 * (radiusMin+margin) - 1));
-			 y = radiusMin + 1 + (int) (Math.random() * (height - 2 * (radiusMin+margin) - 1));
+			 x = radiusMax + 1 + (int) (Math.random() * (width - 2 * (radiusMax+margin) - 1));
+			 y = radiusMax + 1 + (int) (Math.random() * (height - 2 * (radiusMax+margin) - 1));
 			this.positList.add(new Vector2(x, y));
 			indexPost++;
 		}
@@ -153,7 +154,7 @@ public class CircleFactory {
 
 
 
-	public Actor makeCircle(int order, Color color, int radiusMax) {
+	public Actor makeCircle(int order, Color color) {
 
 		float x,y;
 		if(this.nbCurrent>this.nbTotal){
@@ -164,7 +165,7 @@ public class CircleFactory {
 			x = positList.get(nbCurrent).x;
 			y = positList.get(nbCurrent).y;
 		}
-		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 *radiusMax , lifeTime);
+		Actor result = new Circle(order, (int)x, (int) y, color, 2 * radiusMin, 2 *radiusMax , lifeTime*5000);
 		this.nbCurrent++;
 		return result;
 	}
