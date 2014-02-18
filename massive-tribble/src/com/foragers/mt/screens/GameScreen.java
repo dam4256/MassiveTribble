@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 		ScoreManager.initScoreManager(22,88);
 		makeCircles(3, Color.GREEN, 22, 88, 2000);
-		makeCircles(2, Color.BLUE, 22, 88, 2000);
+		//makeCircles(2, Color.BLUE, 22, 88, 2000);
 	}
 
 	@Override

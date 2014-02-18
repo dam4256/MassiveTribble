@@ -7,8 +7,6 @@ import com.foragers.mt.Sound;
 public class ScoreManager{
 
 	private static ScoreManager instance = null;
-	//private static int _cptPASCOMMECA;
-	private static String msgPASCOMMESA;
 	private int nextExpectOrderCircle = 3;
 	private int currentScore = 0;
 	private int minRadius;
@@ -35,7 +33,7 @@ public class ScoreManager{
 	
 	public static void circleHasTouch(Circle circle){
 		ScoreManager sm = getInstance();
-		int currentOrder = Integer.parseInt(circle.getOrder());
+		int currentOrder = circle.getOrder();
 		System.out.println("# " + currentOrder);
 		if(currentOrder == sm.nextExpectOrderCircle){
 			Sound.click.play();
@@ -72,7 +70,7 @@ public class ScoreManager{
 
 	public static void circleHasDiedBeforeTouch(Circle circle){
 		ScoreManager sm = getInstance();
-		sm.nextExpectOrderCircle = Integer.parseInt(circle.getOrder()) +1;
+		sm.nextExpectOrderCircle = circle.getOrder() +1;
 		sm.msg = circle.getOrder() + " " + circle.getColor() + " is died !";
 		sm.lastGain = -150;
 		sm.currentScore -= sm.lastGain;
@@ -81,30 +79,21 @@ public class ScoreManager{
 	
 	public static CharSequence getMsg(){
 		ScoreManager sm = getInstance();
-		msgPASCOMMESA = "";
+		String msg = "";
 		if(sm.lastGain > 0){
-			msgPASCOMMESA = "+" + sm.lastGain;
-			///_cptPASCOMMECA=0;
+			msg = "+" + sm.lastGain;
 			sm.lastGain= 0;
 		}else if(sm.lastGain < 0){
-			msgPASCOMMESA = "-" + sm.lastGain;
-			//_cptPASCOMMECA=0;
+			msg = "-" + sm.lastGain;
 			sm.lastGain= 0;
 		}
 		if(sm.msg != "" && sm.msg!=null){
-			msgPASCOMMESA +=" ";
-			msgPASCOMMESA += sm.msg;
-			//_cptPASCOMMECA=0;
+			msg +=" ";
+			msg += sm.msg;
 			sm.msg= "";
 		}
 		
-		//TODO pas comme ça !!
-		//if(_cptPASCOMMECA > 5000000){
-		//	msgPASCOMMESA = "";
-		//}
-		//_cptPASCOMMECA++;
-		//System.out.println("RR" + msgPASCOMMESA + "^");
-		return msgPASCOMMESA;
+		return msg;
 	}
 	
 	

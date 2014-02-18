@@ -1,6 +1,5 @@
 package com.foragers.mt.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,37 +7,37 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.foragers.mt.Art;
+
 
 public class Circle extends Actor {
 
-	public enum Color {
-
-		BLUE (com.badlogic.gdx.graphics.Color.BLUE),
-		RED (com.badlogic.gdx.graphics.Color.RED),
-		GREEN (com.badlogic.gdx.graphics.Color.GREEN);
-
+public enum Color {
+		
+		RED (com.badlogic.gdx.graphics.Color.RED, Art.redCircle),
+		GREEN (com.badlogic.gdx.graphics.Color.GREEN, Art.greenCircle),
+		BLUE (com.badlogic.gdx.graphics.Color.BLUE, Art.blueCircle);
+		
 		private com.badlogic.gdx.graphics.Color gdxColor;
-
-		Color(com.badlogic.gdx.graphics.Color gdxColor) {
+		private Pixmap[] pixmaps;
+		
+		Color(com.badlogic.gdx.graphics.Color gdxColor, Pixmap[] pixmaps) {
 			this.gdxColor = gdxColor;
+			this.pixmaps = pixmaps;
 		}
-
-		public String toString() {
-			return name().toLowerCase();
-		}
-
+		
 	}
 
 	private Texture texture;
 
-	private String order;
+	private int order;
 	private int x;
 	private int y;
 	private Color color;
 	private int diameterMin;
 	private int diameterMax;
 
-	public String getOrder() {
+	public int getOrder() {
 		return order;
 	}
 
@@ -69,7 +68,7 @@ public class Circle extends Actor {
 	private float maxDeltaTime;
 
 	public Circle(int order, int x, int y, Color color, int diameterMin, int diameterMax, int lifetime) {
-		this.order = String.valueOf(order);
+		this.order = order;
 		this.x = x;
 		this.y = y;
 		this.color = color;
@@ -113,16 +112,13 @@ public class Circle extends Actor {
 		Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
 		pixmap.setColor(color.gdxColor);
 		pixmap.drawCircle(size / 2, size / 2, diameterMax / 2);
-
-		Pixmap order = new Pixmap(Gdx.files.internal("data/" + color.toString() + "-" + this.order + ".png"));
-		pixmap.drawPixmap(order, size / 2 - diameterMin / 2, size / 2 - diameterMin / 2);
-
+		pixmap.drawPixmap(color.pixmaps[this.order - 1], size / 2 - diameterMin / 2, size / 2 - diameterMin / 2);
+		
 		texture = new Texture(pixmap);
 		texture.draw(pixmap, 0, 0);
-
-		order.dispose();
+		
 		pixmap.dispose();
-
+		
 		setBounds(x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth(), texture.getHeight());
 	}
 
