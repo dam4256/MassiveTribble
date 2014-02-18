@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.foragers.mt.entities.CircleFactory;
 import com.foragers.mt.entities.Circle.Color;
 
 public class GameScreen implements Screen {
@@ -58,11 +59,11 @@ public class GameScreen implements Screen {
 	}
 
 	private void makeCircles(int nb, Color color, int radiusMin, int radiusMax, int lifetime) {
-		CircleFactory factory = new CircleFactory(nb, this.height, this.width, radiusMin);
+		CircleFactory factory = new CircleFactory(nb, this.height, this.width, radiusMin, radiusMax);
 		factory.setLifeTime(lifetime);
 		factory.setPixMargin(10);
 		for(int i=0; i< nb ; i++){
-			Actor actor = factory.makeCircle(i+1 ,color, radiusMax);
+			Actor actor = factory.makeCircle(i+1 ,color);
 			stage.addActor(actor);
 		}
 	}
