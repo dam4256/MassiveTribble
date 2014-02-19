@@ -11,7 +11,6 @@ public class Tribble extends Actor{
 	private int x;
 	private int y;
 
-
 	private float stateTime;
 	private float coefX;
 	private float coefY;

@@ -15,14 +15,14 @@ import com.foragers.mt.entities.ScoreManager;
 import com.foragers.mt.entities.Tribble;
 
 public class GameScreen implements Screen {
-	
+
 	private int width = 800;
 	private int height = 480;
 
 	private Stage stage;
 
 	private float deltaCumul=0;
-	
+
 	public GameScreen() {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
@@ -43,44 +43,40 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		
-		/*TextureRegion keyFrame = Assets.tribbleAnim.getKeyFrame(delta, Animation.ANIMATION_LOOPING);
-		SpriteBatch batch = new SpriteBatch();
-		batch.begin();
-		batch.draw(keyFrame, 100, 100, 1, 1);
-		batch.end();*/
-		/*if(stage.getActors().size<1){
-			deltaCumul += delta;
-			makeCircles(3, Color.GREEN, 22, 88, 2000);
-			//if(deltaCumul>0.52) makeCircles(2, Color.BLUE, 22, 88, 2000);
-			System.out.println(deltaCumul);
-		}*/
 
+		deltaCumul+=delta;
 		SpriteBatch spriteBatch;
-		BitmapFont font;
-		spriteBatch = new SpriteBatch();
-		CharSequence str = "Score : " + ScoreManager.getScore();
-		font = new BitmapFont(Gdx.files.internal("data/wellbutrin.fnt"),
-				Gdx.files.internal("data/wellbutrin.png"), false);
-		spriteBatch.begin();
-		spriteBatch.draw(Assets.backgroundRegion, 0, -20, 512, 512);
-		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		font.draw(spriteBatch, str, 5, height);
-		spriteBatch.end();
 
-		str = ScoreManager.getMsg();
-		if( !str.equals("") && str != null){
+		if(deltaCumul<2){
 			spriteBatch = new SpriteBatch();
+			spriteBatch.begin();
+			spriteBatch.draw(Assets.titre, 0, 0);
+			spriteBatch.end();
+		}else{
+			BitmapFont font;
+			spriteBatch = new SpriteBatch();
+			CharSequence str = "Score : " + ScoreManager.getScore();
 			font = new BitmapFont(Gdx.files.internal("data/wellbutrin.fnt"),
 					Gdx.files.internal("data/wellbutrin.png"), false);
 			spriteBatch.begin();
+			spriteBatch.draw(Assets.backgroundRegion, 0, -20, 512, 512);
 			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			font.draw(spriteBatch, str, 5, height-37);
+			font.draw(spriteBatch, str, 5, height);
 			spriteBatch.end();
+
+			str = ScoreManager.getMsg();
+			if( !str.equals("") && str != null){
+				spriteBatch = new SpriteBatch();
+				font = new BitmapFont(Gdx.files.internal("data/wellbutrin.fnt"),
+						Gdx.files.internal("data/wellbutrin.png"), false);
+				spriteBatch.begin();
+				font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+				font.draw(spriteBatch, str, 5, height-37);
+				spriteBatch.end();
+			}
+			stage.act(delta);
+			stage.draw();
 		}
-		stage.act(delta);
-		stage.draw();
 	}
 
 	@Override

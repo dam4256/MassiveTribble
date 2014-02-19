@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
 	public static Texture background;
+	public static Texture titre;
 	public static TextureRegion backgroundRegion;
 
 	public static Texture items;
@@ -29,7 +30,7 @@ public class Assets {
 		tribbleAnim = new Animation(0.2f, new TextureRegion(items, 0, 0, 32, 32), new TextureRegion(items, 32, 0, 32, 32),
 			new TextureRegion(items, 0, 0, 32, 32));
 	
-		
+		titre = loadTexture("data/titre.png");
 
 	}
 
