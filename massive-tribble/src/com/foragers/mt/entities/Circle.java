@@ -26,6 +26,10 @@ public class Circle extends Actor {
 			this.pixmaps = pixmaps;
 		}
 		
+		public static Color getRandom() {
+	        return values()[(int) (Math.random() * values().length)];
+	    }
+		
 	}
 
 	private Texture texture;
@@ -64,7 +68,7 @@ public class Circle extends Actor {
 
 	@Override
 	public void act(float delta) {
-		setVisible(showTime >= (order - 1) * 1000);
+		setVisible(showTime >= (order - 1) * 850);
 		if (isVisible()) {
 			if (diameter > diameterMin) {
 				deltaTime += 1000 * delta;
