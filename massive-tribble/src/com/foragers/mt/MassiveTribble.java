@@ -8,7 +8,7 @@ public class MassiveTribble extends Game {
 	@Override
 	public void create() {
 		Art.load();
-		SoundAndMusic.load();
+		Media.load();
 		setScreen(new GameScreen());
 	}
 

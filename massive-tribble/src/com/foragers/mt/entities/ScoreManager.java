@@ -1,6 +1,6 @@
 package com.foragers.mt.entities;
 
-import com.foragers.mt.SoundAndMusic;
+import com.foragers.mt.Media;
 
 
 
@@ -35,7 +35,7 @@ public class ScoreManager{
 		ScoreManager sm = getInstance();
 		int currentOrder = circle.getOrder();
 		if(currentOrder == sm.nextExpectOrderCircle){
-			SoundAndMusic.click.play();
+			Media.click.play();
 			circle.remove();
 			sm.updateScore(circle);
 			sm.nextExpectOrderCircle--;

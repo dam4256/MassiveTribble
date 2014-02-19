@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.foragers.mt.SoundAndMusic;
+import com.foragers.mt.Media;
 import com.foragers.mt.entities.Circle.Color;
 import com.foragers.mt.entities.CircleFactory;
 import com.foragers.mt.entities.ScoreManager;
@@ -18,8 +18,6 @@ public class GameScreen implements Screen {
 	private int height = 480;
 
 	private Stage stage;
-
-	private float deltaCumul=0;
 	
 	public GameScreen() {
 		width = Gdx.graphics.getWidth();
@@ -28,12 +26,12 @@ public class GameScreen implements Screen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
-
 		ScoreManager.initScoreManager(22, 110);
-		SoundAndMusic.loadMusic();
+		
 		makeCircles(3, Color.GREEN, 22, 110, 2000);
 		//makeCircles(2, Color.BLUE, 22, 110, 2000);
-		SoundAndMusic.playMusic();
+		
+		Media.music.play();
 	}
 
 	@Override
@@ -41,13 +39,6 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
-
-		/*if(stage.getActors().size<1){
-			deltaCumul += delta;
-			makeCircles(3, Color.GREEN, 22, 88, 2000);
-			//if(deltaCumul>0.52) makeCircles(2, Color.BLUE, 22, 88, 2000);
-			System.out.println(deltaCumul);
-		}*/
 
 		SpriteBatch spriteBatch;
 		BitmapFont font;
