@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.foragers.mt.Assets;
 import com.foragers.mt.SoundAndMusic;
 import com.foragers.mt.entities.Circle.Color;
 import com.foragers.mt.entities.CircleFactory;
 import com.foragers.mt.entities.ScoreManager;
+import com.foragers.mt.entities.Tribble;
 
 public class GameScreen implements Screen {
 	
@@ -31,6 +33,8 @@ public class GameScreen implements Screen {
 
 		ScoreManager.initScoreManager(22, 110);
 		SoundAndMusic.loadMusic();
+		stage.addActor(new Tribble(width, height));
+		stage.addActor(new Tribble(width , height));
 		makeCircles(3, Color.GREEN, 22, 110, 2000);
 		//makeCircles(2, Color.BLUE, 22, 110, 2000);
 		SoundAndMusic.playMusic();
@@ -39,9 +43,13 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		stage.act(delta);
-		stage.draw();
-
+		
+		
+		/*TextureRegion keyFrame = Assets.tribbleAnim.getKeyFrame(delta, Animation.ANIMATION_LOOPING);
+		SpriteBatch batch = new SpriteBatch();
+		batch.begin();
+		batch.draw(keyFrame, 100, 100, 1, 1);
+		batch.end();*/
 		/*if(stage.getActors().size<1){
 			deltaCumul += delta;
 			makeCircles(3, Color.GREEN, 22, 88, 2000);
@@ -56,6 +64,7 @@ public class GameScreen implements Screen {
 		font = new BitmapFont(Gdx.files.internal("data/wellbutrin.fnt"),
 				Gdx.files.internal("data/wellbutrin.png"), false);
 		spriteBatch.begin();
+		spriteBatch.draw(Assets.backgroundRegion, 0, -20, 512, 512);
 		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		font.draw(spriteBatch, str, 5, height);
 		spriteBatch.end();
@@ -70,6 +79,8 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, str, 5, height-37);
 			spriteBatch.end();
 		}
+		stage.act(delta);
+		stage.draw();
 	}
 
 	@Override
