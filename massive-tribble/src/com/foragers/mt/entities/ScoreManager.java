@@ -1,6 +1,6 @@
 package com.foragers.mt.entities;
 
-import com.foragers.mt.Sound;
+import com.foragers.mt.SoundAndMusic;
 
 
 
@@ -35,7 +35,7 @@ public class ScoreManager{
 		ScoreManager sm = getInstance();
 		int currentOrder = circle.getOrder();
 		if(currentOrder == sm.nextExpectOrderCircle){
-			Sound.click.play();
+			SoundAndMusic.click.play();
 			circle.remove();
 			sm.updateScore(circle);
 			sm.nextExpectOrderCircle--;
@@ -68,9 +68,9 @@ public class ScoreManager{
 	public static void circleHasDiedBeforeTouch(Circle circle){
 		ScoreManager sm = getInstance();
 		sm.nextExpectOrderCircle = circle.getOrder() +1;
-		sm.msg = circle.getOrder() + " " + circle.getColor() + " is died !";
+		sm.msg = circle.getOrder() + " " + " is died !";
 		sm.lastGain = -150;
-		sm.currentScore -= sm.lastGain;
+		sm.currentScore += sm.lastGain;
 	}
 
 	
@@ -95,8 +95,16 @@ public class ScoreManager{
 	
 	
 	public static CharSequence getScore() {
-		ScoreManager sm = getInstance();		
-		return String.valueOf(sm.currentScore);
+		ScoreManager sm = getInstance();
+		/*String msg = "";
+		if(sm.currentScore>0){
+			msg = "+";
+		}else if(sm.currentScore < 0){
+			msg = "-";
+		}
+		msg += sm.currentScore;
+		return msg;*/
+		return ""+sm.currentScore;
 	}
 	
 }
