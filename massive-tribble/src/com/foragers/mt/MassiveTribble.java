@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.foragers.mt.screens.GameScreen;
 
 public class MassiveTribble extends Game {
-
+	
 	@Override
 	public void create() {
 		Art.load();
