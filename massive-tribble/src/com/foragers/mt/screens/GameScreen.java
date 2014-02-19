@@ -13,7 +13,7 @@ import com.foragers.mt.entities.CircleFactory;
 import com.foragers.mt.entities.ScoreManager;
 
 public class GameScreen implements Screen {
-
+	
 	private int width = 800;
 	private int height = 480;
 
@@ -28,12 +28,12 @@ public class GameScreen implements Screen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
-		ScoreManager.initScoreManager(22,88);
+
+		ScoreManager.initScoreManager(22, 110);
 		SoundAndMusic.loadMusic();
-		makeCircles(3, Color.GREEN, 22, 88, 2000);
-		//makeCircles(2, Color.BLUE, 22, 88, 2000);
+		makeCircles(3, Color.GREEN, 22, 110, 2000);
+		//makeCircles(2, Color.BLUE, 22, 110, 2000);
 		SoundAndMusic.playMusic();
-		
 	}
 
 	@Override
@@ -98,11 +98,11 @@ public class GameScreen implements Screen {
 	}
 
 	private void makeCircles(int nb, Color color, int radiusMin, int radiusMax, int lifetime) {
-		CircleFactory factory = new CircleFactory(nb, this.height, this.width, radiusMin, radiusMax);
+		CircleFactory factory = new CircleFactory(nb, height, width, radiusMin, radiusMax);
 		factory.setLifeTime(lifetime);
 		factory.setPixMargin(10);
-		for(int i=0; i< nb ; i++){
-			Actor actor = factory.makeCircle(i+1 ,color);
+		for (int i = 0; i < nb; i++) {
+			Actor actor = factory.makeCircle(i + 1, color);
 			stage.addActor(actor);
 		}
 	}

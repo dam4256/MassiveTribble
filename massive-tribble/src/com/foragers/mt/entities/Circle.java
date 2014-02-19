@@ -58,6 +58,11 @@ public enum Color {
 	}
 
 	/*
+	 * The amount of time passed 
+	 */
+	private float showTime = 0;
+	
+	/*
 	 * The amount of time passed since the last reducing action.
 	 */
 	private float deltaTime = 0;
@@ -87,22 +92,27 @@ public enum Color {
 
 	@Override
 	public void act(float delta) {
-		if (diameterMax > diameterMin) {
-			deltaTime += 1000 * delta;
-
-			if (deltaTime >= maxDeltaTime) {
-				double nbPixelsToReduce = Math.floor(deltaTime / maxDeltaTime);
-				diameterMax -= nbPixelsToReduce;
-				deltaTime -= nbPixelsToReduce * maxDeltaTime;
-
-				if (diameterMax < diameterMin) {
-					diameterMax = diameterMin;
+		setVisible(showTime >= (order - 1) * 1000);
+		if (isVisible()) {
+			if (diameterMax > diameterMin) {
+				deltaTime += 1000 * delta;
+	
+				if (deltaTime >= maxDeltaTime) {
+					double nbPixelsToReduce = Math.floor(deltaTime / maxDeltaTime);
+					diameterMax -= nbPixelsToReduce;
+					deltaTime -= nbPixelsToReduce * maxDeltaTime;
+					
+					if (diameterMax < diameterMin) {
+						diameterMax = diameterMin;
+					}
+	
+					makeTexture();
 				}
-
-				makeTexture();
+			} else {
+				beforeRemove(false);
 			}
 		} else {
-			beforeRemove(false);
+			showTime += 1000 * delta;
 		}
 	}
 
