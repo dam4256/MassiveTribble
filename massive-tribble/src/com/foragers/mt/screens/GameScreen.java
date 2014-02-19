@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.foragers.mt.Media;
 import com.foragers.mt.entities.Circle.Color;
@@ -13,8 +13,8 @@ import com.foragers.mt.entities.Score;
 
 public class GameScreen implements Screen {
 	
-	private int width = 800;
-	private int height = 480;
+	private int width;
+	private int height;
 
 	private SpriteBatch batcher;
 	private Stage stage;
@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
 		stage.act(delta);
 		stage.draw();
 
-		Score.render(batcher, 5, height);
+		Score.render(batcher, 0, height);
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class GameScreen implements Screen {
 		CircleFactory factory = new CircleFactory(nb, height, width, radiusMin, radiusMax);
 		factory.setLifeTime(lifetime);
 		factory.setPixMargin(10);
-		for (int i = 0; i < nb; i++) {
-			Actor actor = factory.makeCircle(i + 1, color);
-			stage.addActor(actor);
+
+		for (int i = nb; i > 0; i--) {
+			stage.addActor(factory.makeCircle(i, color));
 		}
 	}
 
